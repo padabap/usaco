@@ -16,15 +16,14 @@ struct triple {
 	int len, start, chars;
 };
 
-triple find_odd(int center)
+//find palindromes centered on center. Look for odd lengthed ones iff odd is true.
+triple find_pal(int center, int i, int j, bool odd)
 {
-	triple done = {1, center, 1};
-	int i = 1, j = 1;
+	triple done = {0, -1, 0};
 	if (!isalpha(x[center]))
-	{
-		done.len = 0; done.start = -1; done.chars = 0;
 		return done;
-	}
+	if (odd)
+		done.len = 1; done.start = center; done.chars = 1;
 	while (1)
 	{
 		if (center-i < 0 || center+j >= x.length())
@@ -43,36 +42,6 @@ triple find_odd(int center)
 			}
 			else
 				return done;
-			i++; j++;
-		}
-	}
-	return done;
-}
-
-triple find_even(int center)
-{
-	triple done = {0, -1, 0};
-	int i = 0, j = 1;
-	if (!isalpha(x[center]))
-		return done;
-	while (1)
-	{
-		if (center-i < 0 || center+j >= x.length())
-			break;
-		else
-		{
-			if (!isalpha(x[center-i]))
-				j--;
-			else if (!isalpha(x[center+j])) //if it's not a letter
-				i--;
-			else if (tolower(x[center-i]) == tolower(x[center+j]))
-			{
-				done.len += 2;
-				done.start = center-i;
-				done.chars = i+j+1;
-			}
-			else
-				break;
 			i++; j++;
 		}
 	}
@@ -104,7 +73,7 @@ int main()
 	
 	for (i=0; i<x.length(); i++)
 	{
-		pal = m(find_odd(i), find_even(i));
+		pal = m(find_pal(i, 1, 1, 1), find_pal(i, 0, 1, 0));
 		if (pal.len > max.len)
 			max = pal;
 	}
